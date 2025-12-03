@@ -61,6 +61,10 @@ for cat in category:
 A = int(input())
 M = int(input())
 
+
+sales = {}
+nets = []
+
 for order in range(1, A+1):
     print(f"ORDER_NO", order)
 
@@ -85,6 +89,15 @@ for order in range(1, A+1):
             counts[pid] = {"price": item["price"], "qty": 0}
         counts[pid] ["qty"] += 1
 
+        if pid not in sales:
+            sales[pid] = {
+                "name": item["name"],
+                "category": item["category"],
+                "price": item["price"],
+                "qty": 0
+            }
+        sales[pid]["qty"] += 1
+
     discount = 0
     for pid in counts:
         price = counts[pid] ["price"]
@@ -92,7 +105,27 @@ for order in range(1, A+1):
         pair = qty // 2
         discount += pair * price *2 // 10
     net = sum_price - discount
+    nets.append(net)
 
     print("Sum =", sum_price)
     print("Discount =", discount)
     print("Net =", net)
+
+best_id = max(sales, key=lambda x: sales[x]["qty"])
+best = sales[best_id]
+
+print("\n1. Best Selling")
+print(best_id, best["name"], best["category"], best["price"], best["qty"])
+
+highest_price = max(sales, key=lambda x: sales[x]["price"])
+high = sales[highest_price]
+
+print("\n2. Highest Price Sold")
+print(highest_price, high["name"], high["category"], high["price"], high["qty"])
+
+total_sum = sum(nets)
+counts_order = len(nets)
+avg = total_sum / counts_order
+
+print("\n3. net Summary")
+print("sum = ", total_sum, ", Count = ", counts_order," ,Average = %.2f" % avg)
